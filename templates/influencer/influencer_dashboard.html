@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Influencer Dashboard{% endblock %}
+{% include "logout.html" %}
+{% include "alert_messages.html" %}
+{% block navbar %}{% include "influencer/influencer_nav.html" %}{% endblock %}
+{% block content %}
+<style>
+    body {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #343a40 0%, #212529 100%);
+    }
+    .card-custom {
+        border-radius: 1rem;
+        overflow: hidden;
+    }
+    .btn-custom {
+        width: 100%;
+        max-width: 200px;
+    }
+    .card-header-custom {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+    }
+    .text-danger {
+        color: #dc3545;
+    }
+</style>
+<div class="container py-4">
+    <div class="card-header bg-dark bg-gradient py-1">
+        <div class="d-flex justify-content-center ">
+            <h4 class="fw-bold text-danger mx-1">Influencer Dashboard</h4>
+            <h4 class="fw-bold text-danger mx-1">Welcome {{ influencer.user.username }},</h4>
+        </div>
+    </div>
+
+    <!-- Profile Card -->
+    <div class="card my-3 card-custom">
+        <div class="card-header bg-dark bg-gradient text-white card-header-custom text-center">
+            <h5 class="mb-0">My Profile</h5>
+        </div>
+        <div class="card-body fw-bold bg-light">
+            <div class="row">
+                
+                <div class="col-md-5">
+                    <h5><strong>Username:</strong> {{ influencer.user.username }}</h5>
+                    <p><strong>Category:</strong> {{ influencer.category }}</p>
+                    <p><strong>Reach:</strong> {{ influencer.reach }}</p>
+                    <p><strong>Niche:</strong> {{ influencer.niche }}</p>
+                    <p><strong>Description:</strong> {{ influencer.description }}</p>
+                    <p><strong>Platform Presence:</strong> {{ influencer.platform_presence }}</p>
+                </div>
+                <div class="col-md-7 text-end">
+                    {% if influencer.profile_picture %}
+                        <img src="{{ url_for('static', filename=influencer.profile_picture) }}" alt="Profile Picture" class="img border-dark rounded" style="max-width: 150px; height:180px;">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='default-profile.png') }}" alt="Default Profile Picture" class="img border-dark rounded" style="max-width: 150px; height:180px;">
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="card-footer bg-dark bg-gradient d-flex justify-content-end">
+            <a href="{{ url_for('update_influencer', influencer_id=influencer.id) }}" class="btn btn-outline-primary fw-bold me-2">Update Profile</a>
+            <a href="{{ url_for('confirm_delete_influencer', influencer_id=influencer.id) }}" class="btn btn-outline-danger fw-bold me-2">Delete Profile</a>
+        </div>
+    </div>
+
+ 
+
+{% endblock %}

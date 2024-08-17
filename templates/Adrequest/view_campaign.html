@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block title %}Campaign Details{% endblock %}
+{% block navbar %}{% include "influencer/influencer_nav.html" %}{% endblock %}
+{% include "logout.html" %}
+{% include "alert_messages.html" %}
+{% block content %}
+<style>
+    body {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #343a40 0%, #212529 100%);
+    }
+</style>
+<div class="container my-2">
+    <div class="card">
+        <div class="card-header text-white bg-dark bg-gradient">
+            <h5 class="text-center text-success">Campaign Details</h5>
+        </div>
+        <div class="card-body bg-light">
+            <div class="row">
+                <div class="col-md-6 mb-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Campaign</h5>
+                            <p class="card-text">{{ campaign.title }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Description</h5>
+                            <p class="card-text">{{ campaign.description }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Budget</h5>
+                            <p class="card-text">${{ campaign.budget }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Start Date</h5>
+                            <p class="card-text">{{ campaign.start_date.strftime('%Y-%m-%d') }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">End Date</h5>
+                            <p class="card-text">{{ campaign.end_date.strftime('%Y-%m-%d') }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Status</h5>
+                            <p class="card-text">{{ campaign.status }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Completion Percentage</h5>
+                            <p class="card-text">{{ campaign.completion_percentage }}%</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Visibility</h5>
+                            <p class="card-text">{{ campaign.visibility }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <div class="card">
+                        <div class="card-body">
+                             <!-- Progress Bar -->
+                    <div class="progress ">
+                        <div class="progress-bar" role="progressbar" style="width: {{ progress_percentage }}%;" aria-valuenow="{{ progress_percentage }}" aria-valuemin="0" aria-valuemax="100">
+                            {{ progress_percentage }}%
+                        </div>
+                    </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Niche</h5>
+                            <p class="card-text">{{ campaign.niche }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% if campaign.image %}
+                <div class="col-md-6 mb-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Campaign Image</h5>
+                            <img src="{{ url_for('static', filename=campaign.image) }}" alt="{{ campaign.title }}" class="img-fluid rounded" style="object-fit: cover; height: 150px; width: 250px;">
+                            <!-- Debug Output -->
+                            
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            
+            
+            </div>
+        </div>
+       
+    </div>
+</div>
+{% endblock %}

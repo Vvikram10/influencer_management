@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% block title %}Sponsors Details{% endblock  %}
+{% include "admin/admin_nav.html" %}
+{% include "alert_messages.html" %}
+{% include "logout.html" %}
+{% block content %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+    </style>
+
+    <div class="container">
+        <h5 class="my-1">Campaigns Summary</h5>
+        
+        <!-- Campaign Status Distribution -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <h3>Campaign Status Distribution</h3>
+                <div class="chart-container">
+                    <canvas id="statusChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- Campaign Progress -->
+            <div class="col-md-6">
+                <h3>Campaign Progress Distribution</h3>
+                <div class="chart-container">
+                    <canvas id="progressChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Campaign Details Table -->
+        <div class="mt-5">
+            <div class="card-header bg-dark bg-gradient text-center text-white">
+                <h3>Campaign Details</h3>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Progress (%)</th>
+                        <th>Status</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for campaign in campaign_details %}
+                        <tr>
+                            <td>{{ campaign.title }}</td>
+                            <td>{{ campaign.progress }}</td>
+                            <td>{{ campaign.status }}</td>
+                            <td>{{ campaign.start_date }}</td>
+                            <td>{{ campaign.end_date }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Status Chart
+            var ctxStatus = document.getElementById('statusChart').getContext('2d');
+            var statusCounts = {{ status_counts|tojson }};
+            new Chart(ctxStatus, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(statusCounts),
+                    datasets: [{
+                        label: 'Campaign Status',
+                        data: Object.values(statusCounts),
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+            // Progress Chart
+            var ctxProgress = document.getElementById('progressChart').getContext('2d');
+            var progressRanges = {{ progress_ranges|tojson }};
+            new Chart(ctxProgress, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(progressRanges),
+                    datasets: [{
+                        label: 'Campaign Progress (%)',
+                        data: Object.values(progressRanges),
+                        backgroundColor: '#36A2EB',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        });
+    </script>
+
+    {% endblock %}

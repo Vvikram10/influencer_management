@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}View Ad Requests{% endblock %}
+
+{% block navbar %}{% include "sponsor/sponsor_nav.html" %}{% endblock %}
+{% include "alert_messages.html" %}
+{% include "logout.html" %}
+
+{% block content %}
+<style>
+    body {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #343a40 0%, #212529 100%);
+    }
+</style>
+
+<div class="container my-2">
+    <div class="card bg-light border-dark">
+        <div class="card-header bg-dark text-white">
+            <h5 class="card-title">Send Requests Status</h5>
+        </div>
+        <div class="card-body">
+            {% if requests %}
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Campaign</th>
+                                <th>Influencer</th>
+                                <th>Budget</th>
+                                <th>Message</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for request in requests %}
+                                <tr>
+                                    <td>{{ request.campaign.title }}</td>
+                                    <td>{{ request.influencer.user.username }}</td>
+                                    <td>${{ request.campaign.budget }}</td>
+                                    <td>{{ request.message }}</td>
+                                    <td>
+                                        <span class="badge 
+                                            {% if request.status == 'Accepted' %}
+                                                bg-success
+                                            {% elif request.status == 'Rejected' %}
+                                                bg-danger
+                                            {% else %}
+                                                bg-warning
+                                            {% endif %}">
+                                            {{ request.status|capitalize }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted">No ad requests found.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

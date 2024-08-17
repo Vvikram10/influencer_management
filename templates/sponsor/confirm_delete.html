@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Confirm Deletion{% endblock title %}
+
+{% block content %}
+{% include "logout.html" %}
+{% include "alert_messages.html" %}
+<style>
+    body {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #343a40 0%, #212529 100%); 
+    }
+    
+    .card-header {
+        background-color: #343a40;
+        color: #ffffff;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .card-body {
+        background-color: #f8f9fa;
+        color: #495057;
+    }
+
+    .card {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+</style>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card border-dark bg-light">
+                <div class="card-header bg-dark bg-gradient">
+                    <h5 class="py-1 text-center text-danger">Confirm Deletion</h5>
+                </div>
+                <div class="card-body bg-light fw-bold">
+                    <p>Are you sure you want to delete the influencer "{{ sponsor.user.username }}"?</p>
+                    {% if sponsor.image %}
+                        <img src="{{ url_for('static', filename=sponsor.image) }}" class="img-fluid rounded" style="max-width:200px;" alt="Influencer Image">
+                    {% endif %}
+                    <form action="{{ url_for('delete_sponsor', sponsor_id=sponsor.id) }}" method="post" class="mt-4">
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-danger fw-bold px-2 mx-2">Yes, Delete</button>
+                            <a href="{{ url_for('sponsor_dashboard') }}" class="btn btn-secondary fw-bold">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

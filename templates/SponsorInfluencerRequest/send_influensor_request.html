@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Send Request{% endblock title %}
+{% block navbar %}{% include "influencer/influencer_nav.html" %}{% endblock %}
+{% block content %}
+<style>
+    body {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #343a40 0%, #212529 100%); 
+    }
+</style>
+{% include "alert_messages.html" %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-dark bg-gradient text-white">
+            <h5 class="card-title">Send Influencer Request</h5>
+        </div>
+        <div class="card-body bg-light border-dark">
+            <form method="POST" action="{{ url_for('send_influensor_request') }}">
+                <div class="mb-3">
+                    <label for="campaign_id" class="form-label">Campaign:</label>
+                    <select id="campaign_id" name="campaign_id" class="form-select" required>
+                        {% for campaign in campaigns %}
+                            {% if campaign.visibility != 'Private' %}
+                                <option value="{{ campaign.id }}">{{ campaign.title }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="message" class="form-label">Message:</label>
+                    <textarea id="message" name="message" class="form-control" rows="2" required></textarea>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="payment_amount" class="form-label">Payment Amount:</label>
+                    <input type="number" id="payment_amount" name="payment_amount" class="form-control" step="0.01" required>
+                </div>
+                
+                <button type="submit" class="btn btn-danger bg-gradient">Send Request</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

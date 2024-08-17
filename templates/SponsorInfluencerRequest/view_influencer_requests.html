@@ -1,0 +1,64 @@
+<!-- templates/SponsorInfluencerRequest/view_influencer_requests.html -->
+{% extends "base.html" %}
+{% block title %}View Ad Requests{% endblock %}
+{% include "alert_messages.html" %}
+{% block navbar %}{% include "influencer/influencer_nav.html" %}{% endblock %}
+{% block content %}
+<style>
+    body {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #343a40 0%, #212529 100%); 
+    }
+</style>
+<div class="container my-2">
+    <div class="card-header bg-dark bg-gradient text-center py-1 text-white">
+        <h5>View Influensor Requests Status</h5>
+    </div>
+    {% if requests %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>No</th>
+                        <th>Campaign</th>
+                        <th>Sponsor</th>
+                        <th>Budget</th>
+                        <th>Message</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in requests %}
+                        <tr>
+                            <td>{{loop.index }}</td>
+                            <td>{{ item.request.campaign.title }}</td>
+                            <td>{{ item.sponsor_name }}</td>
+                            <td>${{ item.request.payment_amount }}</td>
+                            <td>{{ item.request.message }}</td>
+                            <td>
+                                <!-- Using badges for status -->
+                                {% if item.request.status == 'Pending' %}
+                                    <span class="badge bg-warning">Pending</span>
+                                {% elif item.request.status == 'Accepted' %}
+                                    <span class="badge bg-success">Accepted</span>
+                                {% elif item.request.status == 'Rejected' %}
+                                    <span class="badge bg-danger">Rejected</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if item.request.status == 'Accepted' %}
+                                    <!-- View button to show campaign details -->
+                                    <a href="{{ url_for('view_campaign', campaign_id=item.request.campaign_id) }}" class="btn btn-primary btn-sm">View</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No ad requests found.</p>
+    {% endif %}
+</div>
+{% endblock %}

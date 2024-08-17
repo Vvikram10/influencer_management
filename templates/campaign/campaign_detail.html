@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}Campaign Details{% endblock title %}
+
+{% block navbar %}{% include "sponsor/sponsor_nav.html" %}{% endblock navbar %}
+{% include "logout.html" %}
+{% include "alert_messages.html" %}
+{% block content %}
+
+<style>
+    .btn-custom {
+        width: 120px;
+    }
+    body {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #343a40 0%, #212529 100%);
+    }
+</style>
+<div class="container my-4">
+    <div class="card border-dark shadow-sm mx-auto" style="max-width: 800px;">
+        <div class="card-header bg-dark bg-gradient text-white">
+            <h4 class="mb-0 text-success">Campaign Details</h4>
+        </div>
+        <div class="card-body bg-light fw-bold">
+            <div class="row align-items-center">
+                <!-- Image Column -->
+                <div class="col-md-6 mb-3 d-flex justify-content-start">
+                    {% if campaign.image %}
+                        <!-- Debug output -->
+                       
+                        <img src="{{ url_for('static', filename=campaign.image) }}" alt="{{ campaign.title }}" class="img-fluid rounded" style="object-fit: cover; height: 200px; width: 150px;">
+                    {% else %}
+                        <p class="text-muted">No image available</p>
+                    {% endif %}
+                </div>
+                <!-- Details Column -->
+                <div class="col-md-6 justify-content-end">
+                    <h5 class="text-dark fw-bold">Campaign : {{ campaign.title }}</h5>
+                    <p><strong class="text-dark">Description:</strong> {{ campaign.description }}</p>
+                    <p><strong class="text-dark">Niche:</strong> {{ campaign.niche }}</p>
+                    <p><strong class="text-dark">Budget:</strong> ${{ campaign.budget }}</p>
+                    <p><strong class="text-dark">Goal:</strong> {{ campaign.goal }}</p>
+                    <p><strong class="text-dark">Visibility:</strong> {{ campaign.visibility }}</p>
+                    <p><strong class="text-dark">Status:</strong> {{ campaign.status }}</p>
+                    <p><strong class="text-dark">Start Date:</strong> {{ campaign.start_date }}</p>
+                    <p><strong class="text-dark">End Date:</strong> {{ campaign.end_date }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer bg-dark bg-gradient">
+            <a href="{{ url_for('list_campaigns') }}" class="btn btn-outline-success btn-custom">Back to List</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

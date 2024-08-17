@@ -1,0 +1,52 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top nav-pills nav-underline">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="{{ url_for('home') }}">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" style="width: 80px; max-height: 50px;" alt="Logo">ConnectHub
+        </a>
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link text-white fw-bold" href="{{ url_for('home') }}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white fw-bold" href="#about">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white fw-bold" href="#features">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white fw-bold" href="#contact">Contact Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white fw-bold" href="#ready">Get Ready</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <button class="btn btn-danger fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span><i class="fa-regular fa-user"></i></span> Sign Up
+                        </button>
+                        <ul class="dropdown-menu fw-bold">
+                            <li><a class="dropdown-item fw-bold" href="{{ url_for('register') }}">Registration</a></li>
+                            <li><a class="dropdown-item fw-bold" href="{{ url_for('admin_login') }}">Admin</a></li>
+                            <li><a class="dropdown-item fw-bold" href="{{ url_for('login') }}">Users</a></li>
+                            <!-- <li><a class="dropdown-item" href="#">Something else here</a></li> -->
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

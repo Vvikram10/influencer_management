@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% block title %}Influencers Details{% endblock %}
+{% include "admin/admin_nav.html" %}
+{% include "alert_messages.html" %}
+{% include "logout.html" %}
+{% block content %}
+<div class="container my-1">
+    <h5 class="my-1 text-dark">Influencers Overview</h5>
+
+    <!-- Search Form -->
+    <form method="GET" action="{{ url_for('admin_view_influencers') }}" class="mb-4">
+        <div class="row">
+            <div class="col-md-5">
+                <input type="text" class="form-control border-dark" name="category" placeholder="Search by Category" value="{{ request.args.get('category', '') }}">
+            </div>
+            <div class="col-md-5">
+                <input type="text" class="form-control border-dark" name="niche" placeholder="Search by Niche" value="{{ request.args.get('niche', '') }}">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">Search</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Influencer Summary Cards -->
+    <div class="row">
+        <!-- Influencer Summary Card -->
+        <div class="col-md-12 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark bg-gradient text-white">
+                    <h5 class="mb-0">Influencer Data Overview</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="influencerChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Influencer Details Table -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-dark bg-gradient mb-1 text-white">
+            <h5 class=" py-1">Influencer Details</h5>
+        </div>
+        <div class="card-body bg-light py-2">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th class="bg-dark text-white">No</th>
+                            <th class="bg-dark text-white">Influensor</th>
+                            <th class="bg-dark text-white">Category</th>
+                            <th class="bg-dark text-white">Niche</th>
+                            <th class="bg-dark text-white">Reach</th>
+                            <th class="bg-dark text-white">Platform Presence</th>
+                            <th class="bg-dark text-white">Profile Picture</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for influencer in influencers %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ influencer.user.username }}</td>
+                            <td>{{ influencer.category }}</td>
+                            <td>{{ influencer.niche }}</td>
+                            <td>{{ influencer.reach }}</td>
+                            <td>{{ influencer.platform_presence }}</td>
+                            <td>
+                                {% if influencer.profile_picture %}
+                                <img src="{{ url_for('static', filename=influencer.profile_picture) }}" class="img-fluid rounded shadow-sm" style="height: 100px; width: 100px;" alt="Profile Picture">
+                                {% else %}
+                                <span class="text-muted">No image available</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var ctxInfluencer = document.getElementById('influencerChart').getContext('2d');
+    new Chart(ctxInfluencer, {
+        type: 'bar', // Changed to bar graph
+        data: {
+            labels: [{% for influencer in influencers %}'{{ influencer.category }}',{% endfor %}],
+            datasets: [{
+                label: 'Reach by Category',
+                data: [{% for influencer in influencers %}{{ influencer.reach }},{% endfor %}],
+                backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    beginAtZero: true
+                },
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Campaign List{% endblock %}
+{% block navbar %}{% include "sponsor/sponsor_nav.html" %}{% endblock %}
+{% include "logout.html" %}
+{% include "alert_messages.html" %}
+{% block content %}
+<style>
+    .btn-custom {
+        width: 80px;
+    }
+    body {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #343a40 0%, #212529 100%);
+    }
+</style>
+<div class="container my-2 text-center">
+    <div class="card-header bg-dark mt-3 py-1 bg-gradient">
+        <h5 class="text-success fw-bold contain ">Campaigns List Here</h5>
+    </div>
+
+    <!-- Search Form -->
+    <div class="row pt-4 py-2 my-1">
+        <!-- Search Bar Column -->
+        <div class="col-12 col-md-6 mb-2 mb-md-0">
+            <form method="get" action="{{ url_for('search_campaigns') }}" class="d-flex align-items-center">
+                <input type="text" name="q" class="form-control fw-normal text-dark border-dark me-2" placeholder="Search campaigns by title or description">
+                
+            
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-outline-primary w-100">Search</button>
+        </div>
+    </form>
+        
+        <!-- Create Campaign Button -->
+        <div class="col-6 col-md-2 mb-2 mb-md-0">
+            <a href="{{ url_for('create_campaign') }}" class="btn btn-outline-success  w-100">Create Campaign</a>
+        </div>
+        
+    
+    </div>
+    
+    <!-- Campaigns Table -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>No</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Niche</th>
+                    <th>Budget</th>
+                    <th>Goal</th>
+                    <th>Visibility</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody class="fw-bold">
+                {% for campaign in campaigns %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ campaign.title }}</td>
+                    <td>{{ campaign.description }}</td>
+                    <td>{{ campaign.niche }}</td>
+                    <td>${{ campaign.budget }}</td>
+                    <td>{{ campaign.goal }}</td>
+                    <td>{{ campaign.visibility }}</td>
+                    <td>{{ campaign.status }}</td>
+                    <td>
+                        <a href="{{ url_for('campaign_details', campaign_id=campaign.id) }}" class="btn btn-outline-warning btn-sm btn-custom">View</a>
+                        <a href="{{ url_for('update_campaign', campaign_id=campaign.id) }}" class="btn btn-outline-primary btn-sm btn-custom">Edit</a>
+                        <form action="{{ url_for('delete_campaign', campaign_id=campaign.id) }}" method="POST" class="d-inline">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn btn-outline-danger btn-sm btn-custom">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% if not campaigns %}
+                <tr>
+                    <td colspan="9" class="text-center">No campaigns available.</td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Manage Adrequest {% endblock %}
+
+{% block navbar %}{% include "sponsor/sponsor_nav.html" %}{% endblock %}
+{% include "alert_messages.html" %}
+{% include "logout.html" %}
+
+{% block content %}
+<style>
+    body {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #343a40 0%, #212529 100%);
+    }
+</style>
+
+<div class="container my-4">
+    <div class="card bg-light border-dark">
+        <div class="card-header bg-dark text-white">
+            <h5 class="card-title">Send Requests</h5>
+        </div>
+        <div class="card-body bg-light">
+            <form action="{{ url_for('manage_adrequest') }}" method="post">
+                <div class="form-group mb-3">
+                    <label for="campaign_id" class="form-label">Select Campaign:</label>
+                    <select name="campaign_id" id="campaign_id" class="form-select" required>
+                        <option value="" disabled selected>Select a campaign</option>
+                        {% for campaign in campaigns %}
+                            <option value="{{ campaign.id }}">{{ campaign.title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="influencer_id" class="form-label">Select Influencer:</label>
+                    <select name="influencer_id" id="influencer_id" class="form-select" required>
+                        <option value="" disabled selected>Select an influencer</option>
+                        {% for influencer in influencers %}
+                            <option value="{{ influencer.id }}">{{ influencer.user.username }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="message" class="form-label">Message:</label>
+                    <textarea name="message" id="message" class="form-control" rows="2" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-success bg-gradient">Send Request</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Confirm Deletion{% endblock title %}
+{% include "logout.html" %}
+{% include "alert_messages.html" %}
+{% block content %}
+
+<style>
+    body {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #343a40 0%, #212529 100%); 
+    }
+    
+    .card-header {
+        background-color: #343a40;
+        color: #ffffff;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .card-body {
+        background-color: #f8f9fa;
+        color: #495057;
+    }
+
+    .card {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+</style>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card border-dark">
+                <div class="card-header">
+                    <h5 class="py-1">Confirm Deletion</h5>
+                </div>
+                <div class="card-body fw-bold">
+                    <p>Are you sure you want to delete the influencer "{{ influencer.user.username }}"?</p>
+                    <form action="{{ url_for('delete_influencer', influencer_id=influencer.id) }}" method="post">
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-danger px-2 mx-2">Yes, Delete</button>
+                            <a href="{{ url_for('influencer_dashboard') }}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

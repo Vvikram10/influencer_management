@@ -1,0 +1,17 @@
+<!-- templates/campaign/delete_campaign.html -->
+{% extends "base.html" %}
+{% block title %}Delete Campaign{% endblock %}
+
+{% block navbar %}{% include "sponsor_nav.html" %}{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Delete Campaign</h2>
+    <div class="alert alert-warning">
+        <strong>Warning!</strong> Are you sure you want to delete the campaign "<strong>{{ campaign.title }}</strong>"? This action cannot be undone.
+    </div>
+    <form method="post">
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a href="{{ url_for('list_campaigns') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

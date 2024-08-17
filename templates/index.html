@@ -1,0 +1,371 @@
+{% extends "base.html" %}
+{% block title %}Home Page{% endblock title %}
+{% block navbar %}{% include "home_nav.html" %}{% endblock navbar %}
+
+{% block content %}
+{% include "alert_messages.html" %}
+<style>
+  
+    body{
+        scroll-behavior: smooth;
+    }
+    .hero-section{
+        min-height: 90vh;
+    }
+    section{
+        min-height:85vh;
+    }
+    .button-custom {
+        transition: all 0.3s ease; /* Smooth transition for hover effect */
+    }
+    .button-custom:hover {
+        background-color: transparent;
+        color: #0d6efd; /* Color for btn-outline-primary */
+        border: 2px solid #0d6efd; /* Border color for btn-outline-primary */
+    }
+    /* Ensuring images have the same height and width */
+    .feature-card .card-img-top {
+    height: 200px; /* Set a fixed height for images */
+    object-fit: cover; /* Maintain aspect ratio while covering the area */
+    }
+
+    /* Ensuring all cards are of equal height */
+    .feature-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Make the card take full height of its column */
+    }
+
+    /* Making sure card bodies expand to fill the card */
+    .feature-card .card-body {
+    flex: 1;
+    }
+    .feature-box {
+    text-align: center;
+    }
+
+    .feature-image {
+    width: 100%;
+    height: 200px; /* Adjust height as needed */
+    object-fit: cover; /* Ensures images cover the area without distortion */
+    border-radius: 8px; /* Adjust the radius as needed */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: adds a shadow for better visibility */
+    }
+
+    /* Ensure the feature-box has consistent padding and border */
+    .feature-box {
+    border: 1px solid #ddd; /* Light border for the box */
+    border-radius: 8px; /* Border radius for the box */
+    padding: 20px; /* Padding inside the box */
+    background-color: #fff; /* Background color for contrast */
+    }
+    .feature-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin: 0 auto;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 1s forwards;
+    }
+
+    .feature-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .feature-card:nth-child(1) { animation-delay: 0.2s; }
+    .feature-card:nth-child(2) { animation-delay: 0.4s; }
+    .feature-card:nth-child(3) { animation-delay: 0.6s; }
+    .feature-card:nth-child(4) { animation-delay: 0.8s; }
+    .feature-card:nth-child(5) { animation-delay: 1s; }
+    .feature-card:nth-child(6) { animation-delay: 1.2s; }
+    .feature-card:nth-child(7) { animation-delay: 1.4s; }
+    .feature-card:nth-child(8) { animation-delay: 1.6s; }
+
+
+    .feature-box {
+        transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 1s forwards;
+    }
+
+    .feature-image {
+        transition: transform 0.5s ease-in-out;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .feature-box:nth-child(1) { animation-delay: 0.2s; }
+    .feature-box:nth-child(2) { animation-delay: 0.4s; }
+    .feature-box:nth-child(3) { animation-delay: 0.6s; }
+
+    /* Optional: Animation effect on image hover */
+    .feature-image:hover {
+        transform: scale(1.05);
+    }
+    .section-title {
+        margin-bottom: 2rem;
+        font-weight: 700;
+    }
+    .section-content {
+        margin-bottom: 3rem;
+    }
+    .feature-box {
+        padding: 1.5rem;
+        border: 1px solid #dee2e6;
+        border-radius: .375rem;
+        background: #f8f9fa;
+    }
+    .feature-icon {
+        font-size: 2rem;
+        color: #007bff;
+        margin-bottom: 1rem;
+    }
+    .text-primary {
+        color: #007bff !important;
+    }
+    .text-secondary {
+        color: #6c757d !important;
+    }
+    
+</style>
+<section class="hero-section text-center text-dark py-5" style="background-image:  url('{{ url_for('static', filename='images/back2.jpg') }}'); background-size: cover; background-position: center;">
+    <!-- Your content here -->
+</section>
+
+<section id="about" class="py-5 bg-light">
+    <div class="container">
+        <h2 class="section-title text-center">About Us</h2>
+        <p class="lead text-center fw-normal mb-4">Welcome to the Influencer and Sponsor Platform, where we bridge the gap between creative influencers and innovative brands. Our mission is to provide a seamless and effective environment for marketing collaborations that drive success for both influencers and sponsors.</p>
+
+        <div class="row">
+            <!-- Admin Panel -->
+            <div class="col-md-6 bg-light">
+                <div class="feature-box text-center">
+                    <h4 class="section-title text-danger fw-bold">Admin Panel</h4>
+                    <p>The Admin Panel is the command center of our platform, providing superusers with robust tools to manage and oversee the entire system.</p>
+                    <h5 class="text-danger fw-bold">Admin side</h5>
+                    <ul class="list-unstyled text-start">
+                        <li><i class="fas fa-tachometer-alt feature-icon text-danger"></i> Dashboard Management</li>
+                        <li><i class="fas fa-users feature-icon text-danger"></i> User Management</li>
+                        <!-- <li><i class="fas fa-campaign feature-icon text-danger"></i> Campaign Oversight</li> -->
+                        <li><i class="fas fa-cogs feature-icon text-danger"></i> Content Management</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- User Panel -->
+            <div class="col-md-6 bg-light">
+                <div class="feature-box text-center">
+                    <h4 class="section-title fw-bold text-danger">User Panel</h4>
+                    <p>The User Panel caters to the needs of two primary user types: Sponsors and Influencers. Each user type has tailored features to enhance their experience and optimize their interactions.</p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="text-danger fw-bold text-danger">Sponsor side</h5>
+                            <ul class="list-unstyled text-start">
+                                <li><i class="fas fa-bullhorn feature-icon text-danger"></i> Campaign Creation</li>
+                                <li><i class="fas fa-search feature-icon text-danger"></i> Influencer Search</li>
+                                <li><i class="fas fa-chart-line feature-icon text-danger"></i> Campaign Tracking</li>
+                                <!-- <li><i class="fas fa-requests feature-icon"></i> Request Management</li> -->
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="text-danger fw-bold text-danger">Influencer side</h5>
+                            <ul class="list-unstyled text-start">
+                                <li><i class="fas fa-user-circle feature-icon text-danger"></i> Profile Management</li>
+                                <li><i class="fas fa-rocket feature-icon text-danger"></i> Campaign Discovery</li>
+                                <li><i class="fas fa-envelope feature-icon text-danger"></i> Request Handling</li>
+                                <!-- <li><i class="fas fa-stats feature-icon"></i> Performance Tracking</li> -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="choose" class="py-5 bg-light">
+    <div class="container text-center">
+        <h2 class="mb-4 fw-bold">Why Choose Us?</h2>
+        <p class="lead fw-normal mb-4">Discover why our platform stands out as the best choice for influencers and sponsors alike. We offer a seamless and powerful experience designed to elevate your marketing efforts and achieve your goals.</p>
+        
+        <div class="row">
+            <!-- Our Mission -->
+            <div class="col-md-4 mb-4">
+                <div class="feature-box">
+                    <img src="{{ url_for('static', filename='images/inmarketting.jpeg') }}" class="img-fluid mb-3 feature-image" alt="Our Mission">
+                    <h4 class="mb-3">Our Mission</h4>
+                    <p>We are dedicated to bridging the gap between influencers and sponsors with a user-centric approach. Our mission is to empower creators and brands to build meaningful partnerships and drive impactful marketing campaigns.</p>
+                </div>
+            </div>
+            
+            <!-- Innovative Tools -->
+            <div class="col-md-4 mb-4">
+                <div class="feature-box">
+                    <img src="{{ url_for('static', filename='images/innovative.jpg') }}" class="img-fluid mb-3 feature-image" alt="Innovative Tools">
+                    <h4 class="mb-3">Innovative Tools</h4>
+                    <p>Leverage our cutting-edge tools for campaign creation, performance tracking, and collaboration management. Our platform offers intuitive features that simplify the marketing process and help you make data-driven decisions.</p>
+                </div>
+            </div>
+            
+            <!-- Dedicated Support -->
+            <div class="col-md-4 mb-4">
+                <div class="feature-box">
+                    <img src="{{ url_for('static', filename='images/support.jpg') }}" class="img-fluid mb-3 feature-image" alt="Dedicated Support">
+                    <h4 class="mb-3">Our Support</h4>
+                    <p>Our team is here to support you every step of the way. From onboarding to ongoing assistance, we provide comprehensive support to ensure that you get the most out of our platform and achieve your marketing objectives.</p>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-5">
+            <h3 class="mb-3">Join Us and Elevate Your Marketing Game</h3>
+            <p class="mb-4">Discover how our project can transform your marketing strategy. Whether you're an influencer or a sponsor, we offer the tools and support you need to succeed in the digital age.</p>
+            <a href="#ready" class="btn btn-danger fw-bold btn-md w-25 ">Get Started Today</a>
+        </div>
+    </div>
+</section>
+
+<section id="features" class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center fw-bold mb-4 py-4">Features for Influencers</h2>
+        <div class="row">
+            <!-- Influencer Features -->
+            <div class="col-md-3 mb-4">
+                <div class="card feature-card">
+                    <img src="{{ url_for('static', filename='images/camp1.jpeg') }}" class="card-img-top" alt="Discover Campaigns">
+                    <div class="card-body">
+                        <h5 class="card-title">Discover Exciting Campaigns</h5>
+                        <p class="card-text">Explore a wide range of campaigns from various brands that match your niche and audience. Get access to exclusive opportunities tailored to your style and interests.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card feature-card">
+                    <img src="{{ url_for('static', filename='images/performace.jpeg') }}" class="card-img-top" alt="Track Performance">
+                    <div class="card-body">
+                        <h5 class="card-title">Track Your Performance</h5>
+                        <p class="card-text">Monitor the success of your campaigns with detailed analytics. Track key metrics like engagement, reach, and conversion rates to optimize your performance and increase your impact.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card feature-card">
+                    <img src="{{ url_for('static', filename='images/management.jpeg') }}" class="card-img-top" alt="Manage Collaborations">
+                    <div class="card-body">
+                        <h5 class="card-title">Efficient Collaboration Management</h5>
+                        <p class="card-text">Easily manage your collaborations with brands through our streamlined messaging system. Receive, review, and respond to collaboration requests all in one place.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card feature-card">
+                    <img src="{{ url_for('static', filename='images/reward.jpeg') }}" class="card-img-top" alt="Earn Rewards">
+                    <div class="card-body">
+                        <h5 class="card-title">Earn Rewards and Payments</h5>
+                        <p class="card-text">Get rewarded for your efforts with timely payments and incentives. Our platform ensures a smooth transaction process so you can focus on creating great content.</p>
+                    </div>
+                </div>
+            </div>
+            <h2 class="text-center py-4 fw-bold my-4">Features for Sponsors</h2>
+            <!-- Sponsor Features -->
+            <div class="col-md-3 mb-4">
+                <div class="card feature-card">
+                    <img src="{{ url_for('static', filename='images/create.jpg') }}" class="card-img-top" alt="Create Campaigns">
+                    <div class="card-body">
+                        <h5 class="card-title">Create Targeted Campaigns</h5>
+                        <p class="card-text">Design and launch customized campaigns that reach your target audience effectively. Define your campaign goals, budget, and preferences to attract the right influencers.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card feature-card">
+                    <img src="{{ url_for('static', filename='images/sponce.jpeg') }}" class="card-img-top" alt="Find Influencers">
+                    <div class="card-body">
+                        <h5 class="card-title">Find the Perfect Influencers</h5>
+                        <p class="card-text">Search and connect with influencers who match your brand’s values and audience. Use advanced filters to find influencers based on niche, reach, and engagement levels.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card feature-card">
+                    <img src="{{ url_for('static', filename='images/request.jpeg') }}" class="card-img-top" alt="Manage Requests">
+                    <div class="card-body">
+                        <h5 class="card-title">Manage Collaboration Requests</h5>
+                        <p class="card-text">Efficiently handle requests from influencers with our intuitive dashboard. Approve, reject, or negotiate terms to ensure successful collaborations and campaign outcomes.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card feature-card">
+                    <img src="{{ url_for('static', filename='images/result.jpeg') }}" class="card-img-top" alt="Track Results">
+                    <div class="card-body">
+                        <h5 class="card-title">Track Campaign Results</h5>
+                        <p class="card-text">Monitor the performance of your campaigns with comprehensive analytics. Measure key metrics and get actionable insights to optimize your marketing strategies.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="py-5" id="contact">
+    <div class="container">
+        <div class="row justify-content-center text-center mb-2 mb-lg-4">
+            <div class="col-lg-8 col-xxl-7">
+                <span class="text-muted">Stay Connected</span>
+                <h4 class="display-5 fw-bold mb-3">Get in Touch with Us</h4>
+                <p class="lead fw-normal">Have questions or need assistance? Our team is here to help. Choose one of the options below to reach out to us, and we'll get back to you as soon as possible. We're committed to providing you with the best support and guidance.</p>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                    <a href="mailto:vvikram3312@gmail.com" class="btn btn-danger fw-bold btn-md ">Email Us</a>
+                    <a href="mailto:support@example.com" class="btn btn-secondary fw-bold btn-md ">Support</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="ready" class=" text-center" style="background-color: #f8f9fa;">
+    <div class="container py-5">
+        <h4 class="display-6 fw-bold my-4">Ready to Transform Your Marketing?</h4>
+        <p class="lead fw-normal my-3">Join us today to connect with top influencers or explore exclusive campaigns designed to elevate your brand. Our platform offers innovative tools and seamless integration to help you succeed.</p>
+        
+        <div class="d-flex justify-content-center my-4 ">
+            <div class="icon-wrapper">
+                <i class="fas fa-rocket fa-3x text-danger"></i>
+            </div>
+        </div>
+        
+        <a href="{{ url_for('login') }}" class="btn btn-danger fw-bold btn-md  shadow-lg">Sign up here</a>
+    </div>
+</section>
+
+{% endblock  %}
+{% block footer %}
+{% include "footer.html" %}
+{% endblock %}

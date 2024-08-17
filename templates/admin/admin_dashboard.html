@@ -1,0 +1,253 @@
+<!-- templates/admin_dashboard.html -->
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard{% endblock  %}
+{% include "admin/admin_nav.html" %}
+{% include "alert_messages.html" %}
+{% include "logout.html" %}
+
+{% block content %}
+
+<div class="card">
+    <div class="card-header">
+        <h5>Admin Dashboard</h5>
+    </div>
+    <div class="card-body">
+        <!-- Graph Section -->
+        <div class="card">
+            <div class="card-header bg-dark bg-gradient text-white d-flex justify-content-between">
+                <h4>Statistics Charts</h4>
+                <h4>User Distribution</h4>
+            </div>
+        </div>
+        <div class="card-body bg-light border-dark my-1">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card border-dark fw-bold">
+                        <canvas id="barChart"></canvas>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card py-2 px-1 border-dark fw-bold">
+                        <canvas id="pieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Statistics Section -->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card bg-primary text-white mb-3">
+                    <div class="card-header">Total Users</div>
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">{{ total_users }}</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-success text-white mb-3">
+                    <div class="card-header">Sponsors</div>
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">{{ num_sponsors }}</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-info text-white mb-3">
+                    <div class="card-header">Influencers</div>
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">{{ num_influencers }}</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-warning text-dark mb-3">
+                    <div class="card-header">Admins</div>
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">{{ num_admins }}</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-danger text-white mb-3">
+                    <div class="card-header">Flagged Users</div>
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">{{ num_flagged_users }}</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-secondary text-white mb-3">
+                    <div class="card-header">Unflagged Users</div>
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">{{ num_unflagged_users }}</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-light text-dark mb-3">
+                    <div class="card-header">Active Users</div>
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">{{ total_active_users }}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+       
+<!-- Search Form -->
+            <form method="get" class="mb-4">
+                 <div class="form-group d-flex justify-content-end ">
+                      <div ><input type="text" name="search" class="form-control mx-1" placeholder="Search by username" value="{{ search_query }}"></div>
+                         <div class=" mx-1">
+            <button class="btn btn-primary mx-1 btn-md" type="submit">Search</button>
+        </div>
+    </div>
+</form>
+         
+            
+        
+
+        <!-- Users Table -->
+        <div class="card mt-4 border-dark">
+            <div class="card-header  bg-dark bg-gradient text-white">
+                <h4>All Users Details</h4>
+            </div>
+            <div class="card-body fw-bold bg-light border-dark">
+                <table class="table table-bordered">
+                    <thead >
+                        <tr>
+                            <th class="bg-dark text-white" >ID</th>
+                            <th class="bg-dark text-white" >Username</th>
+                            <th class="bg-dark text-white" >Role</th>
+                            <th class="bg-dark text-white" >Flagged</th>
+                            <th class="bg-dark text-white" >Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.role }}</td>
+                            <td>{{ 'Yes' if user.flagged else 'No' }}</td>
+                            <td>
+                                <div class="d-flex justify-content-center ">
+                                    <div>
+                                        <a href="{{ url_for('edit_user', user_id=user.id) }}" class="btn btn-warning btn-md me-2">Edit</a>
+                                    </div>
+                                   <div> <form action="{{ url_for('delete_user', user_id=user.id) }}" method="POST" class="me-2">
+                                    <button type="submit" class="btn btn-danger btn-md">Delete</button>
+                                </form></div>
+                                   <div><form action="{{ url_for('user_flag', user_id=user.id, action='flag' if not user.flagged else 'unflag') }}" method="POST">
+                                    <input type="submit" class="btn btn-{{ 'secondary' if user.flagged else 'primary' }} btn-custom" value="{{ 'Unflag' if user.flagged else 'Flag' }}">
+                                </form></div>
+                                    
+                                </div>
+                            </td>
+                            
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Bar Chart
+    var ctxBar = document.getElementById('barChart').getContext('2d');
+    new Chart(ctxBar, {
+        type: 'bar',
+        data: {
+            labels: ['Total Users', 'Sponsors', 'Influencers', 'Admins'],
+            datasets: [{
+                label: 'Count',
+                data: [{{ total_users }}, {{ num_sponsors }}, {{ num_influencers }}, {{ num_admins }}],
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.6)',  // Different color for bar
+                    'rgba(153, 102, 255, 0.6)',
+                    'rgba(255, 159, 64, 0.6)',
+                    'rgba(255, 99, 132, 0.6)'
+                ],
+                borderColor: [
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 99, 132, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) { return value; }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        font: {
+                            weight: 'bold'  // Make the font weight bold
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // Pie Chart
+    var ctxPie = document.getElementById('pieChart').getContext('2d');
+    new Chart(ctxPie, {
+        type: 'pie',
+        data: {
+            labels: ['Active Users', 'Inactive Users', 'Sponsors', 'Influencers', 'Flagged Users'],
+            datasets: [{
+                label: 'Count',
+                data: [
+                    {{ total_active_users }},
+                    {{ total_users - total_active_users }},
+                    {{ num_sponsors }},
+                    {{ num_influencers }},
+                    {{ num_flagged_users }}
+                ],
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.6)',  // Different color for pie sections
+                    'rgba(153, 102, 255, 0.6)',
+                    'rgba(255, 159, 64, 0.6)',
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(255, 205, 86, 0.6)'
+                ],
+                borderColor: [
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(255, 205, 86, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    labels: {
+                        font: {
+                            weight: 'bold'  // Make the font weight bold
+                        }
+                    }
+                }
+            }
+        }
+    });
+});
+</script>
+
+{% endblock %}

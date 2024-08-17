@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Receive Requests{% endblock %}
+
+{% block navbar %}{% include "sponsor/sponsor_nav.html" %}{% endblock %}
+{% include "alert_messages.html" %}
+{% include "logout.html" %}
+
+{% block content %}
+<style>
+    body {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #343a40 0%, #212529 100%);
+    }
+</style>
+
+<div class="container my-2">
+    <div class="card bg-light border-dark">
+        <div class="card-header bg-dark text-white">
+            <h5 class="card-title">Receive Requests</h5>
+        </div>
+        <div class="card-body">
+            {% if requests %}
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Campaign</th>
+                                <th>Influencer</th>
+                                <th>Message</th>                            
+                                <th>Payment Amount</th>
+                                <th>Status</th>
+                                <th>Date Sent</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for request in requests %}
+                                <tr>
+                                    <td>{{ request.campaign.title if request.campaign else 'Unknown Campaign' }}</td>
+                                    <td>{{ request.influencer.user.username if request.influencer else 'Unknown Influencer' }}</td>
+                                    <td>{{ request.message }}</td>                                 
+                                    <td>${{ request.payment_amount }}</td>
+                                    <td>
+                                        {% if request.status == 'Pending' %}
+                                            <span class="badge bg-warning text-dark">Pending</span>
+                                        {% elif request.status == 'Accepted' %}
+                                            <span class="badge bg-success">Accepted</span>
+                                        {% elif request.status == 'Rejected' %}
+                                            <span class="badge bg-danger">Rejected</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ request.date_sent.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                                    <td>
+                                        {% if request.status == 'Pending' %}
+                                            <!-- Form to accept the request -->
+                                            <form method="post" action="{{ url_for('accept_request', request_id=request.id) }}" class="d-inline">
+                                                <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                                            </form>
+                                            <!-- Form to reject the request -->
+                                            <form method="post" action="{{ url_for('reject_request', request_id=request.id) }}" class="d-inline">
+                                                <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                                            </form>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted">No requests found.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

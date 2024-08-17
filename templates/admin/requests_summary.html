@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% block title %}Request Details{% endblock  %}
+{% include "admin/admin_nav.html" %}
+{% include "alert_messages.html" %}
+{% include "logout.html" %}
+{% block content %}
+    <div class="container my-2">
+        <h5 class="py-1">Requests Summary</h5>
+        
+          <!-- Ad Requests Status Charts -->
+          <div class="row my-3">
+            <div class="col-md-4">
+                <h3>Accepted Requests</h3>
+                <canvas id="acceptedChart" width="400" height="200"></canvas>
+            </div>
+            <div class="col-md-4">
+                <h3>Rejected Requests</h3>
+                <canvas id="rejectedChart" width="400" height="200"></canvas>
+            </div>
+            <div class="col-md-4">
+                <h3>Pending Requests</h3>
+                <canvas id="pendingChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+      <div class="container px-1 py-1 my-2">
+          <!-- Ad Requests Details Table -->
+          <div class="card-header bg-dark text-white text-center bg-gradient">
+            <h5 class="my-1">Ad Requests Details</h5>
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Campaign Title</th>
+                    <th>Sponsor</th>
+                    <th>Influencer</th>
+                    <th>Message</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for request in ad_requests %}
+                <tr>
+                    <td>{{ request.id }}</td>
+                    <td>{{ request.campaign.title }}</td>
+                    <td>{{ request.sponsor.user.username }}</td>
+                    <td>{{ request.influencer.user.username }}</td>
+                    <td>{{ request.message }}</td>
+                    <td>{{ request.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+      </div>
+      
+
+    <script>
+        // Data for the charts
+        const acceptedData = {{ ad_requests_statuses.accepted|tojson }};
+        const rejectedData = {{ ad_requests_statuses.rejected|tojson }};
+        const pendingData = {{ ad_requests_statuses.pending|tojson }};
+
+        // Chart.js configuration for Accepted Requests
+        const ctxAccepted = document.getElementById('acceptedChart').getContext('2d');
+        new Chart(ctxAccepted, {
+            type: 'pie',
+            data: {
+                labels: ['Accepted Requests'],
+                datasets: [{
+                    data: [acceptedData],
+                    backgroundColor: ['rgba(75, 192, 192, 0.2)'],
+                    borderColor: ['rgba(75, 192, 192, 1)'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+
+        // Chart.js configuration for Rejected Requests
+        const ctxRejected = document.getElementById('rejectedChart').getContext('2d');
+        new Chart(ctxRejected, {
+            type: 'pie',
+            data: {
+                labels: ['Rejected Requests'],
+                datasets: [{
+                    data: [rejectedData],
+                    backgroundColor: ['rgba(255, 99, 132, 0.2)'],
+                    borderColor: ['rgba(255, 99, 132, 1)'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+
+        // Chart.js configuration for Pending Requests
+        const ctxPending = document.getElementById('pendingChart').getContext('2d');
+        new Chart(ctxPending, {
+            type: 'pie',
+            data: {
+                labels: ['Pending Requests'],
+                datasets: [{
+                    data: [pendingData],
+                    backgroundColor: ['rgba(255, 206, 86, 0.2)'],
+                    borderColor: ['rgba(255, 206, 86, 1)'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+    </script>
+{% endblock %}

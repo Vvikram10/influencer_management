@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}Sponsor Dashboard{% endblock %}
+
+{% block navbar %}{% include "sponsor/sponsor_nav.html" %}{% endblock %}
+{% include "alert_messages.html" %}
+{% include "logout.html" %}
+
+{% block content %}
+
+<style>
+    body {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #343a40 0%, #212529 100%); 
+    }
+</style>
+
+<div class="container ">
+   <div class="card-header bg-dark bg-gradient">
+    <div class="d-flex justify-content-center py-1 my-2">
+        <h5 class="fw-bold text-success mx-1">Sponsor Dashboard!</h5>
+        <h5 class="fw-bold text-success mx-1">Welcome, {{ sponsor.user.username }}!</h5>
+    </div>
+   </div>
+   
+    <!-- Display sponsor profile information -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-dark bg-gradient text-white">
+            <h5 class="card-title mb-0">Sponsor Profile Here</h5>
+        </div>
+        <div class="card-body fw-bold bg-light">
+            <div class="row">
+                <div class="col-md-7 mb-3">
+                    {% if sponsor.image %}
+    <img src="{{ url_for('static', filename=sponsor.image) }}" class="img rounded border-dark" style="height:150px; width:150px;" alt="Sponsor Image">
+{% else %}
+    <p>No image available</p>
+{% endif %}
+
+                </div>
+                <div class="col-md-5">
+                    <p class="card-title text-success"><strong>Sponsor Name: {{ sponsor.user.username }}</strong></p>
+                    <p class="card-title"><strong>Title: {{ sponsor.title }}</strong></p>
+                    <p><strong>Industry: {{ sponsor.industry }}</strong></p>
+                    <p><strong>Budget: ${{ sponsor.budget }}</strong></p>
+                    <p><strong>Description: {{ sponsor.description }}</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile update and delete buttons -->
+    <div class="d-flex justify-content-end mb-4">
+        <a href="{{ url_for('update_sponsor', sponsor_id=sponsor.id) }}" class="btn btn-outline-success mx-2">Update Profile</a>
+
+        <a href="{{ url_for('confirm_delete_sponsor', sponsor_id=sponsor.id) }}" class="btn btn-outline-danger mx-2">Confirm Delete</a>
+
+    </div> 
+
+    <!-- Active Campaigns -->
+    {% if active_campaigns %}
+    <div class="container my-3">
+        <div class="card">
+            <div class="card-header bg-dark">
+                <h5 class="text-white fw-bold">Active Campaigns</h5>
+            </div>
+            <div class="card-body fw-bold">
+                <div id="campaigns">
+                    {% for campaign in active_campaigns %}
+                        <div id="campaign-{{ campaign.id }}" class="campaign mb-3 p-3 border rounded">
+                            <div class="d-flex justify-content-between">
+                                <h4>Campaign: {{ campaign.title }}</h4>
+                                <p><strong>Start Date:</strong> {{ campaign.start_date }}</p>
+                                <p><strong>End Date:</strong> {{ campaign.end_date }}</p>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: {{ campaign.progress }}%;" aria-valuenow="{{ campaign.progress }}" aria-valuemin="0" aria-valuemax="100">{{ campaign.progress }}%</div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include JavaScript to periodically update progress -->
+    <script>
+        function updateCampaigns() {
+            fetch('/api/campaign-progress/')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Fetched campaign progress:', data);
+                    const campaigns = data.campaigns;
+                    campaigns.forEach(campaign => {
+                        const campaignElement = document.getElementById(`campaign-${campaign.id}`);
+                        if (campaignElement) {
+                            const progressBar = campaignElement.querySelector('.progress-bar');
+                            if (progressBar) {
+                                progressBar.style.width = `${campaign.progress}%`;
+                                progressBar.setAttribute('aria-valuenow', campaign.progress);
+                                progressBar.textContent = `${campaign.progress}%`;
+                            }
+                        }
+                    });
+                })
+                .catch(error => console.error('Error fetching campaign progress:', error));
+        }
+
+        // Update progress every 10 seconds
+        setInterval(updateCampaigns, 10000);
+
+        // Initial load
+        updateCampaigns();
+    </script>
+    {% endif %}
+</div>
+
+{% endblock %}

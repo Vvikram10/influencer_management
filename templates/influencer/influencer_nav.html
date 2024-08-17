@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% include "logout.html" %}
+{% include "alert_messages.html" %}
+{% block content %}
+<nav class="navbar navbar-expand-lg bg-dark  sticky-top text-white nav-pills nav-underline">
+    <div class="container">
+      <a class="navbar-brand text-white fw-bold" href="{{ url_for('influencer_dashboard') }}">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" style="width: 80px; max-height: 50px;" alt="Influensor Dashboard">
+        ConnectHub
+      </a>
+      <button
+        class="navbar-toggler text-light bg-light"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link text-white fw-bold" href="{{ url_for('influencer_dashboard') }}">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white fw-bold" href="{{ url_for('send_influensor_request') }}">Campaign</a>
+          </li>
+         
+         
+          <li class="nav-item">
+            <a class="nav-link text-white fw-bold" href="{{ url_for('manage_influencer_adrequests') }}">Receive</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white fw-bold" href="{{ url_for('view_influencer_requests') }}">Status</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white fw-bold" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+              Logout
+          </a>
+          
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+{% endblock %}
