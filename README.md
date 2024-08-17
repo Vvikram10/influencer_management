@@ -11,3 +11,8 @@ cmd : 1. pip install Flask Flask-SQLAlchemy
           2. Flask db migrate -m "initial migrate"
           3. Flask db upgrade 
            now run -> python app.py
+
+
+At last important things i have mentioned in mentinence part at end of app.py so plz make sure when someone use this code plz increase date from current date so that you dont have face any problem to run project.....
+
+Good Luck and Thank you for visiting...
